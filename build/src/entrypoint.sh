@@ -23,7 +23,7 @@ echo "Initialized App"
 # -d: disable default route (disables NAT without '-N')
 # -p "route 172.33.0.0 255.255.0.0": Route to push to the client
 # -n "172.33.1.2": DNS server (BIND)
-ovpn_genconfig -c -d -u udp://"${_DAPPNODE_GLOBAL_HOSTNAME}" -s 172.33.10.0/24 \
+ovpn_genconfig -c -d -u udp://"${_DAPPNODE_GLOBAL_HOSTNAME}" -s 172.33.8.0/22 \
     -p "route 172.33.0.0 255.255.0.0" -n "172.33.1.2"
 
 # check if PKI is initalized already, if not use hostname as CN

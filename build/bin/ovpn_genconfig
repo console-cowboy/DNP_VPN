@@ -343,9 +343,10 @@ dev $OVPN_DEVICE$OVPN_DEVICEN
 status /tmp/openvpn-status.log
 client-config-dir $OPENVPN_CCD_DIR
 ifconfig-pool-persist ipp.txt 1
-client-connect  "/usr/local/bin/ovpn_client_up"
 
 duplicate-cn
+
+client-connect  "/usr/local/bin/ovpn_client_up"
 
 # user nobody
 # group nogroup
