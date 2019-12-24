@@ -10,7 +10,7 @@ done
 [ -n "$_DAPPNODE_GLOBAL_HOSTNAME" ] || echo "Public hostname loaded: ${_DAPPNODE_GLOBAL_HOSTNAME}"
 # check and generate random seed
 if [ ! -f "${SALT_PATH}" ]; then
-  head /dev/urandom | tr -dc a-f0-9 | head -c 16 > "${SALT_PATH}"
+    head /dev/urandom | tr -dc a-f0-9 | head -c 16 >"${SALT_PATH}"
 fi
 OVPN_CN="${_DAPPNODE_GLOBAL_HOSTNAME}"
 export OVPN_CN
@@ -23,7 +23,7 @@ echo "Initialized App"
 # -d: disable default route (disables NAT without '-N')
 # -p "route 172.33.0.0 255.255.0.0": Route to push to the client
 # -n "172.33.1.2": DNS server (BIND)
-ovpn_genconfig -c -d -u udp://"${_DAPPNODE_GLOBAL_HOSTNAME}" -s 172.33.8.0/22 \
+ovpn_genconfig -c -d -u udp://"${_DAPPNODE_GLOBAL_HOSTNAME}" -s 172.33.10.0/24 \
     -p "route 172.33.0.0 255.255.0.0" -n "172.33.1.2"
 
 # check if PKI is initalized already, if not use hostname as CN
@@ -36,14 +36,14 @@ fi
 if [ ! -e "${OPENVPN_ADMIN_PROFILE}" ]; then
     vpncli add "${DEFAULT_ADMIN_USER}"
     vpncli get "${DEFAULT_ADMIN_USER}"
-    echo "ifconfig-push 172.33.10.1 255.255.252.0" > "${OPENVPN_CCD_DIR}/${DEFAULT_ADMIN_USER}"
+    echo "ifconfig-push 172.33.10.1 255.255.252.0" >"${OPENVPN_CCD_DIR}/${DEFAULT_ADMIN_USER}"
 fi
 
 # Enable Proxy ARP (needs privileges)
-echo 1 > /proc/sys/net/ipv4/conf/eth0/proxy_arp
+echo 1 >/proc/sys/net/ipv4/conf/eth0/proxy_arp
 
 # Save environment
-env | sed '/affinity/d' > /etc/env.sh
+env | sed '/affinity/d' >/etc/env.sh
 
 # Supervisord processes:
 supervisord -c supervisord.conf
